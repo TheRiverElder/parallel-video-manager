@@ -18,7 +18,11 @@
 
 	onDestroy(() => simpleEventDispatcher.unregisterAll());
 
-	function setPageIndex(index: number) {
+	function setPageIndex(index: number, doUpdate: boolean = false) {
+		if (doUpdate) {
+			updateData();
+		}
+
 		const searchParams = new URLSearchParams();
 		searchParams.set('path', data.path);
 		searchParams.set('amountPerPage', "6");
@@ -41,8 +45,6 @@
 			headers: { 'content-type': 'application/json' }
 		});
 
-		setPageIndex(data.pageIndex + 1);
-
 		invalidateAll();
 	}
 </script>
@@ -64,9 +66,11 @@
 		{/each}
 	</div>
 	<div class="footer-view">
+		<button on:click={() => setPageIndex(data.pageIndex - 1, true)}>提交后转跳上一页</button>
 		<button on:click={() => setPageIndex(data.pageIndex - 1)}>上一页</button>
 		{data.pageIndex + 1} / {Math.ceil(data.videoAmount / data.amountPerPage)}页, 每页{data.amountPerPage}项，共{data.videoAmount}项
 		<button on:click={() => setPageIndex(data.pageIndex + 1)}>下一页</button>
+		<button on:click={() => setPageIndex(data.pageIndex + 1, true)}>提交后转跳下一页</button>
 	</div>
 </div>
 
