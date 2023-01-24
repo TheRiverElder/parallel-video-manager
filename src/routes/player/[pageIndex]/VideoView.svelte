@@ -129,7 +129,7 @@
 
 	.video-view > .video-wrapper {
 		width: 24em;
-		height: 16em;
+		height: 13.5em;
 	}
 
 	.video-view > .video-wrapper > video {
@@ -170,14 +170,13 @@
 	}
 
 	button.unset:not(:disabled) {
-		background-color: gray;
-		color: black;
+		background-color: darkorange;
 	}
 	button.unset:hover:not(:disabled) {
-		background-color: lightgray;
+		background-color: orange;
 	}
 	button.unset:active:not(:disabled) {
-		background-color: darkgray;
+		background-color: orangered;
 	}
 
 	button.delete:not(:disabled) {
