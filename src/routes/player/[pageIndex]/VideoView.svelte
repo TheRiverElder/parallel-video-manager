@@ -4,7 +4,7 @@
 	import { getExecutionName } from '$lib/utils/Strings';
 	import { extname, join } from 'path-browserify';
 	import { getContext, onDestroy, onMount } from 'svelte';
-	import { CONTEXT_NAME_EVENT_DISPATCHER, EVENT_NAME_ALL_MUTE, EVENT_NAME_ALL_PLAY, EVENT_NAME_ALL_STOP, EVENT_NAME_ALL_UNMUTE } from './Events';
+	import { CONTEXT_NAME_EVENT_DISPATCHER, EVENT_NAME_ALL_MUTE, EVENT_NAME_ALL_PLAY, EVENT_NAME_ALL_SET_NOT_VIEWED, EVENT_NAME_ALL_STOP, EVENT_NAME_ALL_UNMUTE } from './Events';
 
 	export let path: string;
 	export let state: VideoState;
@@ -32,6 +32,10 @@
 				muted = false;
 				break;
 			}
+			case EVENT_NAME_ALL_SET_NOT_VIEWED: {
+				setNotViewed();
+				break;
+			}
 		}
 	};
 		
@@ -55,6 +59,11 @@
 		const searchParams = new URLSearchParams();
 		searchParams.set('path', join(path, name));
 		return resourceUrlPattern + searchParams;
+	}
+
+	function setNotViewed() {
+		state.viewed = false;
+		state = state;
 	}
 
 	function setExecution(execution: Execution) {
@@ -97,6 +106,11 @@
 			disabled={state.execution === Execution.DELETE}
 			on:click={() => setExecution(Execution.DELETE)}>删除</button
 		>
+		<button
+			class="set-not-viewed"
+			disabled={!state.viewed}
+			on:click={setNotViewed}>标为未看</button
+		>
 	</span>
 </div>
 
@@ -130,7 +144,7 @@
 	}
 
 	.actions > button {
-		width: 6em;
+		width: 20%;
 		color: white;
 		font-size: 1em;
 		cursor: pointer;
@@ -174,5 +188,15 @@
 	}
 	button.delete:active:not(:disabled) {
 		background-color: darkred;
+	}
+
+	button.set-not-viewed:not(:disabled) {
+		background-color: blue;
+	}
+	button.set-not-viewed:hover:not(:disabled) {
+		background-color: lightblue;
+	}
+	button.set-not-viewed:active:not(:disabled) {
+		background-color: darkblue;
 	}
 </style>

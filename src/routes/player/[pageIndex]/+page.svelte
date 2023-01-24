@@ -3,7 +3,7 @@
 	import type { PlayerData } from '$lib/ProjectDataTypes';
 	import { SimpleEventDispatcher } from '$lib/utils/SimpleEvent';
 	import { onDestroy, setContext } from 'svelte';
-	import { CONTEXT_NAME_EVENT_DISPATCHER, EVENT_NAME_ALL_MUTE, EVENT_NAME_ALL_PLAY, EVENT_NAME_ALL_STOP, EVENT_NAME_ALL_UNMUTE } from './Events';
+	import { CONTEXT_NAME_EVENT_DISPATCHER, EVENT_NAME_ALL_MUTE, EVENT_NAME_ALL_PLAY, EVENT_NAME_ALL_SET_NOT_VIEWED, EVENT_NAME_ALL_STOP, EVENT_NAME_ALL_UNMUTE } from './Events';
 	import VideoView from './VideoView.svelte';
 
 	export let data: PlayerData;
@@ -30,8 +30,6 @@
 
 	function updateData() {
 
-		data.videoStates.forEach(state => (state.viewed = true));
-
 		const searchParams = new URLSearchParams();
 		searchParams.set('path', data.path);
 		const location = window.location;
@@ -55,6 +53,7 @@
 		<button on:click={getClickListener(EVENT_NAME_ALL_STOP)}>全部暂停</button>
 		<button on:click={getClickListener(EVENT_NAME_ALL_MUTE)}>全部静音</button>
 		<button on:click={getClickListener(EVENT_NAME_ALL_UNMUTE)}>全部解除静音</button>
+		<button on:click={getClickListener(EVENT_NAME_ALL_SET_NOT_VIEWED)}>全部标为未看</button>
 		<button on:click={updateData}>提交</button>
 		<button on:click={() => window.location.reload()}>刷新</button>
 		<button on:click={() => window.location.href = ("/project" + window.location.search) }>项目页面</button>
