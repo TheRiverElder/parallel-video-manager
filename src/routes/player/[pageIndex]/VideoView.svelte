@@ -1,7 +1,6 @@
 <script lang="ts">
+	import { Execution, type VideoState } from '$lib/ProjectDataTypes';
 	import { extname, join } from 'path-browserify';
-	import type { VideoState } from './+page.server';
-	import { Execution } from './Execution';
 
 	export let path: string;
 	export let state: VideoState;

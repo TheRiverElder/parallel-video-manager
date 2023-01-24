@@ -2,8 +2,12 @@ import express from 'express';
 const app = express();
 
 app.get('/', function (request, response) {
-  const path: string = request.query["path"] as string || ".";
-  response.sendFile(path);
+    const path: string = request.query["path"] as string || ".";
+    response.sendFile(path);
 });
 
-app.listen(8888, () => { console.log("resource server started at port 8888"); });
+export const resourceServerPort = 8888; 
+console.log("[Resource Server] starting at port " + resourceServerPort); 
+app.listen(resourceServerPort, () => { 
+    console.log("[Resource Server] started at port " + resourceServerPort); 
+});
