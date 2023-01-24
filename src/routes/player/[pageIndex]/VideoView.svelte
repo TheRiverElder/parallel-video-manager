@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Execution, type VideoState } from '$lib/ProjectDataTypes';
 	import type { SimpleEventDispatcher } from '$lib/utils/SimpleEvent';
+	import { getExecutionName } from '$lib/utils/Strings';
 	import { extname, join } from 'path-browserify';
 	import { getContext, onDestroy, onMount } from 'svelte';
 	import { CONTEXT_NAME_EVENT_DISPATCHER, EVENT_NAME_ALL_MUTE, EVENT_NAME_ALL_PLAY, EVENT_NAME_ALL_STOP, EVENT_NAME_ALL_UNMUTE } from './Events';
@@ -60,16 +61,26 @@
 		state.execution = execution;
 		state = state;
 	}
+
+	function onVideoDisplay() {
+		state.viewed = true;
+		state = state;
+	}
 </script>
 
 <div class="video-view">
 	<div class="video-wrapper">
-		<video bind:this={video} controls muted={ muted }>
+		<video bind:this={video} controls muted={ muted } on:play={onVideoDisplay}>
 			<track kind="captions" src={getVideoTrackSrc(state.name)} />
 			<source src={getVideoSrc(state.name)} />
 		</video>
 	</div>
 	<span class="name">{state.name}</span>
+	<span class="state">
+		<span>{ state.viewed ? "已观看" : "未观看" }</span>
+		<span>{ getExecutionName(state.execution) }</span>
+		<span>{ state.executed ? "已执行" : "未执行" }</span>
+	</span>
 	<span class="actions">
 		<button
 			class="preserve"

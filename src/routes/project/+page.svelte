@@ -1,18 +1,8 @@
 <script lang="ts">
-	import { Execution, type ProjectData } from '$lib/ProjectDataTypes';
+	import type { ProjectData } from '$lib/ProjectDataTypes';
+	import { getExecutionName } from '$lib/utils/Strings';
 
 	export let data: ProjectData;
-
-	function getExecutionName(execution: Execution) {
-		switch (execution) {
-			case Execution.UNSET:
-				return '未设置';
-			case Execution.PRESERVE:
-				return '保留';
-			case Execution.DELETE:
-				return '删除';
-		}
-	}
 
 	function executeData() {
 		const location = window.location;
