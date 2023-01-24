@@ -1,8 +1,10 @@
-import { error, redirect } from "@sveltejs/kit";
+import { error } from "@sveltejs/kit";
 import { loadProject, initializeProject } from "$lib/server/ProjectOperations";
 import type { PageServerLoad } from "./$types";
 import type { ProjectData, PlayerData } from "$lib/ProjectDataTypes";
 import { getErrorMessage } from "../../Utils";
+
+export const ssr: boolean = false;
 
 export const load = (function load({ params, url }) {
     const pageIndex = Number.parseInt(params.pageIndex) || 0;

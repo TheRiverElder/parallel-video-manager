@@ -2,6 +2,10 @@
 
 Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
 
+## 注意事项
+
+*`npm install` 前记得先安装Visual Studio最新版本，并选择为桌面开发者的C++内容！！！`drivelist`模块需要使用该内容访问驱动列表*
+
 ## Creating a project
 
 If you're seeing this, you've probably already done this step. Congrats!

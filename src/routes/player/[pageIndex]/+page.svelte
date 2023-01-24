@@ -1,18 +1,27 @@
 <script lang="ts">
 	import { invalidateAll } from '$app/navigation';
-	import type { PlayerData, VideoState } from '$lib/ProjectDataTypes';
+	import type { PlayerData } from '$lib/ProjectDataTypes';
+	import { SimpleEventDispatcher } from '$lib/utils/SimpleEvent';
+	import { onDestroy, setContext } from 'svelte';
+	import { CONTEXT_NAME_EVENT_DISPATCHER, EVENT_NAME_ALL_MUTE, EVENT_NAME_ALL_PLAY, EVENT_NAME_ALL_STOP, EVENT_NAME_ALL_UNMUTE } from './Events';
 	import VideoView from './VideoView.svelte';
 
-	export const ssr: boolean = false;
 	export let data: PlayerData;
 
-	let parallelVideoLimit: number = 6;
-	let videoStates: VideoState[] = data.videoStates;
+	const simpleEventDispatcher = new SimpleEventDispatcher<string>();
+	
+	setContext(CONTEXT_NAME_EVENT_DISPATCHER, simpleEventDispatcher);
+
+	function getClickListener(eventName: string) {
+		return () => simpleEventDispatcher.dispatch(eventName);
+	}
+
+	onDestroy(() => simpleEventDispatcher.unregisterAll());
 
 	function setPageIndex(index: number) {
 		const searchParams = new URLSearchParams();
 		searchParams.set('path', data.path);
-		searchParams.set('amountPerPage', parallelVideoLimit.toString());
+		searchParams.set('amountPerPage', "6");
 		const location = window.location;
 		const url = location.origin + '/player/' + index + '?' + searchParams + location.hash;
 
@@ -42,12 +51,16 @@
 
 <div class="player-view">
 	<div class="header-view">
+		<button on:click={getClickListener(EVENT_NAME_ALL_PLAY)}>全部播放</button>
+		<button on:click={getClickListener(EVENT_NAME_ALL_STOP)}>全部暂停</button>
+		<button on:click={getClickListener(EVENT_NAME_ALL_MUTE)}>全部静音</button>
+		<button on:click={getClickListener(EVENT_NAME_ALL_UNMUTE)}>全部解除静音</button>
 		<button on:click={updateData}>提交</button>
 		<button on:click={() => window.location.reload()}>刷新</button>
 		<button on:click={() => window.location.href = ("/project" + window.location.search) }>项目页面</button>
 	</div>
 	<div class="videos-view">
-		{#each videoStates as state}
+		{#each data.videoStates as state}
 			<VideoView path={data.path} {state} />
 		{/each}
 	</div>
