@@ -2,7 +2,6 @@ import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from "./$types";
 import { readdirSync, statSync, existsSync } from "fs";
 import { resolve } from "path";
-import { list as getDriveList } from "drivelist";
 
 export interface ManagerData {
     path: string;
@@ -34,6 +33,15 @@ export const load = (async function load({ url }) {
         }
     } else return {
         path: "",
-        childDirectoryPaths: (await getDriveList()).map(dirve => dirve.mountpoints.map(mp => mp.path.replaceAll("\\", "/"))).flat(1),
+        childDirectoryPaths: getDriveList(),
     };
 }) satisfies PageServerLoad<ManagerData>;
+
+function getDriveList() {
+    return [
+        "C:/",
+        "D:/",
+        "E:/",
+        "F:/",
+    ];
+}
